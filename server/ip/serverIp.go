@@ -26,8 +26,8 @@ func main() {
 }
 
 func handleClient(conn *net.IPConn) {
-	var buf [512]byte
-	n, addr, err := conn.ReadFromIP(buf[:])
+	buf := make([]byte,512)
+	n, addr, err := conn.ReadFromIP(buf)
 	if err != nil {
 		return
 	}

@@ -1,25 +1,38 @@
 package main
 
 import (
+	"encoding/json"
 	"net"
 )
 
+//ipclient
 type ipClient struct {
-	dialer string
+	dialer   string
 	listener string
+	conn     *net.IPConn
 }
 
-func(c *ipClient) set(d string,l string) {
-	c.dialer = d
-	c.listener = l
+//Set address
+func (ic *ipClient) set(dialer string, listener string) {
+	ic.dialer = dialer
+	ic.listener = listener
 }
 
-func(c ipClient) startClient() (conn*net.IPConn,err error){
-	lAddr, err := net.ResolveIPAddr("ip", c.dialer)
+//Start the cilent
+func (ic *ipClient) startClient() {
+	lAddr, err := net.ResolveIPAddr("ip", ic.dialer)
 	checkError(err)
-	rAddr, err := net.ResolveIPAddr("ip", c.listener)
+	rAddr, err := net.ResolveIPAddr("ip", ic.listener)
 	checkError(err)
-	conn, err = net.DialIP("ip:4", lAddr, rAddr)
+	ic.conn, err = net.DialIP("ip:4", lAddr, rAddr)
 	checkError(err)
-	return conn,err
+	//return ic.conn, err
+}
+
+//login
+func (ic ipClient) login(usr User) {
+	usr.CMD = []string{"LOGIN", usr.Username, usr.Password}
+	u, err := json.Marshal(usr)
+	checkError(err)
+	ic.conn.Write(u)
 }

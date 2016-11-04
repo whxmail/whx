@@ -9,28 +9,10 @@ import (
 )
 
 func main() {
-	test("begin")	//开始
-
-	//ipclient
-	dialer := "127.0.0.1"
-	listener := "127.0.1.1"
-	ic := ipClient{}
-	ic.set(dialer,listener)
-	conn,err := ic.startClient()
-	checkError(err)
-	
-	_, err = conn.Write([]byte("Hello Server!"))
-	checkError(err)
-	var buf [512]byte
-	n, addr, err := conn.ReadFromIP(buf[:])
-	checkError(err)
-	fmt.Println("Reply from server", addr.String(), string(buf[0:n]))
-
-	test("http")	//http开始运行节点
-
+	test("http")	//开始
 	http.HandleFunc("/", sayhelloName)       //设置访问的路由
 	http.HandleFunc("/login", login)         //设置访问的路由
-	err = http.ListenAndServe(":8080", nil) //设置监听的端口
+	err := http.ListenAndServe(":8080", nil) //设置监听的端口
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
@@ -52,17 +34,3 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello astaxie!") //这个写入到w的是输出到客户端的
 }
 
-/*
-func login(w http.ResponseWriter, r *http.Request) {
-    fmt.Println("method:", r.Method) //获取请求的方法
-    if r.Method == "GET" {
-        t, _ := template.ParseFiles("login.gtpl")
-        log.Println(t.Execute(w, nil))
-    } else {
-        //请求的是登陆数据，那么执行登陆的逻辑判断
-	r.ParseForm()
-        fmt.Println("username:", r.Form["username"])
-        fmt.Println("password:", r.Form["password"])
-    }
-}
-*/
