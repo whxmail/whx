@@ -2,6 +2,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
@@ -9,7 +10,8 @@ func main() {
 
 	m := make(map[string]interface{})
 	m = map[string]interface{}{"liu": 123, "zhu": []interface{}{"22", "33"}}
-
+	b, _ := json.Marshal(m)
+	fmt.Println(string(b))
 	parseMap(m)
 }
 

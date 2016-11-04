@@ -13,7 +13,7 @@ type ipClient struct {
 }
 
 //Set address
-func (ic *ipClient) set(dialer string, listener string) {
+func (ic *ipClient) setAddr(dialer string, listener string) {
 	ic.dialer = dialer
 	ic.listener = listener
 }

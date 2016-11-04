@@ -1,5 +1,5 @@
 // User.go
-package main
+package types
 
 //	"fmt"
 

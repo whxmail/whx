@@ -1,8 +1,9 @@
-package main
+package types
 
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	//	"fmt"
 	//	"fmt"
 	"net"
@@ -12,18 +13,18 @@ import (
 
 //func(data Data) login
 
-type ipServer struct {
+type IPServer struct {
 	listener string
 	conn     *net.IPConn
 }
 
 //设置ip监听地址
-func (is *ipServer) set(listener string) {
+func (is *IPServer) SetAddr(listener string) {
 	is.listener = listener
 }
 
 //启动ipServer
-func (is *ipServer) startServer() {
+func (is *IPServer) StartServer() {
 	ipAddr, err := net.ResolveIPAddr("ip", is.listener)
 	checkError(err)
 	is.conn, err = net.ListenIP("ip:4", ipAddr)
@@ -31,7 +32,7 @@ func (is *ipServer) startServer() {
 }
 
 /*
-func (is ipServer) getUser() (usr User) {
+func (is ipServer) GetUser() (usr User) {
 	buf := make([]byte, 512)
 	n, _, err := is.conn.ReadFromIP(buf)
 	checkError(err)
@@ -39,16 +40,22 @@ func (is ipServer) getUser() (usr User) {
 	return usr
 }
 */
-func (is ipServer) getData() map[string]interface{} {
+func (is IPServer) GetData() Data {
 	buf := make([]byte, 512)
 	n, _, err := is.conn.ReadFromIP(buf)
 	checkError(err)
 	var v interface{}
 	json.Unmarshal(buf[:n], &v)
 	//test(v)
-	m, ok := v.(map[string]interface{})
+	data, ok := v.(map[string]interface{})
 	if !ok {
 		fmt.Println("Unknown data!")
 	}
-	return m
+	return data
+}
+
+func checkError(err error) {
+	if err != nil {
+		log.Fatal("Fatal error:", err.Error())
+	}
 }

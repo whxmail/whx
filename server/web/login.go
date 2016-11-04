@@ -25,7 +25,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		dialer := "127.0.0.1"
 		listener := "127.0.1.1"
 		ic := ipClient{}
-		ic.set(dialer, listener)
+		ic.setAddr(dialer, listener)
 		ic.startClient()
 		//checkError(err)
 

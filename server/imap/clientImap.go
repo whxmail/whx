@@ -1,12 +1,14 @@
 package main
 
 import (
-	//	"fmt"
-	//	"encoding/json"
+	//"fmt"
 	"log"
 
-	//	"github.com/emersion/go-imap"
-	//	"github.com/emersion/go-imap/client"
+	"github.com/whxmail/whx/types"
+	//	"types/data"
+
+	"github.com/emersion/go-imap"
+	"github.com/emersion/go-imap/client"
 )
 
 func main() {
@@ -14,54 +16,16 @@ func main() {
 
 	//Start ipserver
 	test("Starting IPServer...")
-	is := ipServer{}
-	is.set("127.0.1.1")
-	is.startServer()
+	is := types.IPServer{}
+	is.SetAddr("127.0.1.1")
+	is.StartServer()
 
-	/*
-		buf := make([]byte, 512)
-		n, addr, err := is.conn.ReadFromIP(buf)
-		checkError(err)
-		test(string(buf[:n]))
+	data := is.GetData() //return type: map[string]interface{}
+	cmd, _ := data.GetCMD()
 
-		u := User{}
-		json.Unmarshal(buf[:n], &u)
-		test("u.Username")
-		fmt.Println(u.Username)
-
-		fmt.Println("Receive from client", addr.String(), string(buf[:n]))
-
-		json.Unmarshal(buf, &u)
-
-		is.conn.WriteToIP([]byte("Welcome Client!"), addr)
-	*/
-
-	data := is.getData() //return type: map[string]interface{}
-
-	//	usr := User{}
-	if dt, ok := data["CMD"]; ok {
-		test(dt)
-		cmd := dt.([]interface{})
-		test(cmd)
-		for _, v := range cmd {
-			out := v.(string)
-			test(out)
-		}
-		/*		if !ok {
-					fmt.Println("Data error!")
-				}
-		*/
-		/*		switch cmd[0] {
-				case "LOGIN":
-					usr.Username = cmd[1]
-					usr.Password = cmd[2]
-				case "LOGOUT":
-					usr.Flag = false
-				}*/
-	}
-	/*
-		mail := usr.Username
-		pwd := usr.Password
+	if cmd[0] == "LOGIN" {
+		mail := cmd[1]
+		pwd := cmd[2]
 
 		test(mail)
 		// Connect to imapserver
@@ -126,5 +90,5 @@ func main() {
 		}
 
 		log.Println("Done!")
-	*/
+	}
 }
