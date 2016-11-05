@@ -6,10 +6,15 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+	//"github.com/whxmail/whx/types"
 )
 
+const ()
+
+var ()
+
 func main() {
-	test("http")	//开始
 	http.HandleFunc("/", sayhelloName)       //设置访问的路由
 	http.HandleFunc("/login", login)         //设置访问的路由
 	err := http.ListenAndServe(":8080", nil) //设置监听的端口
@@ -17,7 +22,7 @@ func main() {
 		log.Fatal("ListenAndServe: ", err)
 	}
 
-	test("end")	//不会运行
+	test("end") //不会运行
 }
 
 func sayhelloName(w http.ResponseWriter, r *http.Request) {
@@ -33,4 +38,3 @@ func sayhelloName(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(w, "Hello astaxie!") //这个写入到w的是输出到客户端的
 }
-

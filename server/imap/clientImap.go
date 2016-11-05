@@ -5,10 +5,9 @@ import (
 	"log"
 
 	"github.com/whxmail/whx/types"
-	//	"types/data"
 
-	"github.com/emersion/go-imap"
-	"github.com/emersion/go-imap/client"
+	//	"github.com/emersion/go-imap"
+	//	"github.com/emersion/go-imap/client"
 )
 
 func main() {
@@ -19,76 +18,85 @@ func main() {
 	is := types.IPServer{}
 	is.SetAddr("127.0.1.1")
 	is.StartServer()
+	test("Success to start ipserver!")
 
-	data := is.GetData() //return type: map[string]interface{}
-	cmd, _ := data.GetCMD()
+	data, addr := is.GetData() //return type: map[string]interface{}
+	test(data)
+	test(addr)
 
-	if cmd[0] == "LOGIN" {
-		mail := cmd[1]
-		pwd := cmd[2]
+	/*	m := map[string]string{"name": "liu"}
+		is.SendData(m, addr)
+		test("Success to send message!")
+	*/
+	//	cmd := data.GetCMD()
 
-		test(mail)
-		// Connect to imapserver
-		test("Connect to IMAPServer")
-		c, err := client.DialTLS("imap.qq.com:993", nil)
-		if err != nil {
-			log.Fatal(err)
+	/*
+		if cmd[0] == "LOGIN" {
+			mail := cmd[1]
+			pwd := cmd[2]
+
+			// Connect to imapserver
+			test("Connect to IMAPServer")
+			c, err := client.DialTLS("imap.qq.com:993", nil)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println("Connected")
+
+			// Don't forget to logout
+			defer c.Logout()
+
+			//Obtain information about user
+
+			// Login
+
+			if err := c.Login(mail, pwd); err != nil {
+				log.Fatal(err)
+			}
+			log.Println("Logged in")
+
+			// List mailboxes
+			mailboxes := make(chan *imap.MailboxInfo)
+			done := make(chan error, 1)
+			go func() {
+				done <- c.List("", "*", mailboxes)
+			}()
+
+			log.Println("Mailboxes:")
+			for m := range mailboxes {
+				log.Println("* " + m.Name)
+			}
+
+			if err := <-done; err != nil {
+				log.Fatal(err)
+			}
+
+			// Select INBOX
+			mbox, err := c.Select("INBOX", false)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println("Flags for INBOX:", mbox.Flags)
+
+			// Get the last 4 messages
+			seqset, _ := imap.NewSeqSet("")
+			seqset.AddRange(mbox.Messages-3, mbox.Messages)
+
+			messages := make(chan *imap.Message)
+			done = make(chan error, 1)
+			go func() {
+				done <- c.Fetch(seqset, []string{imap.EnvelopeMsgAttr}, messages)
+			}()
+
+			for msg := range messages {
+				log.Println(msg.Envelope.Subject)
+			}
+
+			if err := <-done; err != nil {
+				log.Fatal(err)
+			}
+
+			log.Println("Done!")
 		}
-		log.Println("Connected")
-
-		// Don't forget to logout
-		defer c.Logout()
-
-		//Obtain information about user
-
-		// Login
-
-		if err := c.Login(mail, pwd); err != nil {
-			log.Fatal(err)
-		}
-		log.Println("Logged in")
-
-		// List mailboxes
-		mailboxes := make(chan *imap.MailboxInfo)
-		done := make(chan error, 1)
-		go func() {
-			done <- c.List("", "*", mailboxes)
-		}()
-
-		log.Println("Mailboxes:")
-		for m := range mailboxes {
-			log.Println("* " + m.Name)
-		}
-
-		if err := <-done; err != nil {
-			log.Fatal(err)
-		}
-
-		// Select INBOX
-		mbox, err := c.Select("INBOX", false)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.Println("Flags for INBOX:", mbox.Flags)
-
-		// Get the last 4 messages
-		seqset, _ := imap.NewSeqSet("")
-		seqset.AddRange(mbox.Messages-3, mbox.Messages)
-
-		messages := make(chan *imap.Message)
-		done = make(chan error, 1)
-		go func() {
-			done <- c.Fetch(seqset, []string{imap.EnvelopeMsgAttr}, messages)
-		}()
-
-		for msg := range messages {
-			log.Println(msg.Envelope.Subject)
-		}
-
-		if err := <-done; err != nil {
-			log.Fatal(err)
-		}
-
-		log.Println("Done!")
-	}
+	*/
 }

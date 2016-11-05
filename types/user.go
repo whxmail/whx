@@ -1,30 +1,13 @@
 // User.go
 package types
 
-//	"fmt"
+type ID uint64
 
 type User struct {
 	Username string
 	Password string
+	Mail     string
+	Id       ID
 	CMD      []string
-	Flag     bool
+	Flag     String
 }
-
-/*
-func (usr User) Set(src string, dst interface{}) {
-	switch src {
-	case "Username", "username":
-		if value, ok := dst.(string); ok {
-			usr.Username = value
-		}
-
-	case "Password", "password":
-		if value, ok := dst.(string); ok {
-			usr.Password = value
-		}
-
-	default:
-		fmt.Println("Error para!")
-	}
-}
-*/
