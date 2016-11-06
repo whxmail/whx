@@ -9,5 +9,5 @@ type User struct {
 	Mail     string
 	Id       ID
 	CMD      []string
-	Flag     String
+	Flag     string
 }
