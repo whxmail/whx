@@ -1,13 +1,15 @@
 // User.go
 package types
 
-type ID uint64
+type (
+	ID int64
+)
 
 type User struct {
 	Username string
 	Password string
-	Mail     string
-	Id       ID
-	CMD      []string
+	Mail     Mail
+	ID       ID
+	CMD      CMD
 	Flag     string
 }

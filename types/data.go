@@ -11,10 +11,6 @@ const (
 
 type Data map[string]interface{}
 
-func (data Data) ParseData() {
-
-}
-
 //Flag is the type of string whitch contains some of symbols
 func (data Data) GetFlag() (flag string, err error) {
 	if v, ok := data["Flag"]; ok {

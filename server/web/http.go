@@ -7,12 +7,19 @@ import (
 	"net/http"
 	"strings"
 
-	//"github.com/whxmail/whx/types"
+	"github.com/whxmail/whx/types"
 )
 
 const ()
 
-var ()
+var (
+	client types.TCPClient
+)
+
+func init() {
+	client = types.TCPClient{}
+	client.StartClient("127.0.0.2:9999", "127.0.1.1:9999")
+}
 
 func main() {
 	http.HandleFunc("/", sayhelloName)       //设置访问的路由

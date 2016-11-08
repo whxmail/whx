@@ -1,6 +1,7 @@
 package main
 
 import (
+	//	"net"
 	//"fmt"
 	"log"
 
@@ -12,22 +13,13 @@ import (
 
 func main() {
 	log.Println("Connecting to server...")
+	server := types.NewTCPServer()
 
-	//Start ipserver
-	test("Starting IPServer...")
-	is := types.IPServer{}
-	is.SetAddr("127.0.1.1")
-	is.StartServer()
-	test("Success to start ipserver!")
+	//Register router
+	server.MuxRegister("LOGIN", login)
+	test(server.Mux)
+	server.ListenAndServer("127.0.1.1:9999", myHandleFunc)
 
-	data, addr := is.GetData() //return type: map[string]interface{}
-	test(data)
-	test(addr)
-
-	/*	m := map[string]string{"name": "liu"}
-		is.SendData(m, addr)
-		test("Success to send message!")
-	*/
 	//	cmd := data.GetCMD()
 
 	/*

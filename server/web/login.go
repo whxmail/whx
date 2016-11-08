@@ -21,16 +21,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 		usr := types.User{Username: r.Form.Get("username"), Password: r.Form.Get("password")}
 		fmt.Println(usr)
 
-		//ipclient
-		laddr := "127.0.0.1"
-		raddr := "127.0.1.1"
-		ic := types.IPClient{}
-		ic.SetAddr(laddr, raddr)
-		ic.StartClient()
+		client.Login(usr)
 
-		ic.SendData(usr)
-		data := ic.GetData()
+		data := client.GetData()
 		fmt.Println(data)
-
+		//	client.Close()
 	}
 }
