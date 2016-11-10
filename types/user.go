@@ -10,6 +10,5 @@ type User struct {
 	Password string
 	Mail     Mail
 	ID       ID
-	CMD      CMD
-	Flag     string
+	Staus    string
 }

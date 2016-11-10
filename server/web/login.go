@@ -25,6 +25,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 
 		data := client.GetData()
 		fmt.Println(data)
-		//	client.Close()
+
+		ok := data.Status() //Check that whether data is dealed with by server successfully
+
+		if !ok {
+
+		}
+
 	}
 }

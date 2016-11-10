@@ -21,9 +21,15 @@ func (client *TCPClient) StartClient(laddr string, raddr string) {
 }
 
 func (client TCPClient) Login(usr User) {
-	usr.CMD = CMD{"LOGIN", usr.Username, usr.Password}
-	data := Data{"CMD": usr.CMD}
+	data := Data{
+		"REQ":      "LOGIN",
+		"USERNAME": usr.Username,
+		"PASSWORD": usr.Password}
 	client.SendData(data)
+}
+
+func (client TCPClient) HandleFunc() {
+
 }
 
 func (client TCPClient) GetData() Data {

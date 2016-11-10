@@ -25,24 +25,37 @@ func (data Data) GetValueByKey(key string) (value reflect.Value, err error) {
 	return value, err
 }
 
+func pt(k chan int) {
+	<-k
+	fmt.Println("go running...")
+}
+
 func main() {
-	data := Data{"name": "liu"}
-	res, _ := data.GetValueByKey("name")
-	//	var t map[string]interface{}
-	//	t = data
-	//	rest := reflect.TypeOf(res)
-	datat := reflect.TypeOf(data)
-	data_name := data["name"]
-	data_name_t := reflect.TypeOf(data_name)
-	fmt.Println(res)
-	fmt.Println(data_name_t)
-	fmt.Println(datat)
+	var k = make(chan int)
+
+	for {
+		go pt(k)
+		k <- 1
+	}
+
 	/*
-		var st structTest
-		str := []string{"hello", "word"}
-		st.strTest = str
-		fmt.Println(str)
-		fmt.Println(st)
+		data := Data{"name": "liu"}
+		res, _ := data.GetValueByKey("name")
+		//	var t map[string]interface{}
+		//	t = data
+		//	rest := reflect.TypeOf(res)
+		datat := reflect.TypeOf(data)
+		data_name := data["name"]
+		data_name_t := reflect.TypeOf(data_name)
+		fmt.Println(res)
+		fmt.Println(data_name_t)
+		fmt.Println(datat)
+		/*
+			var st structTest
+			str := []string{"hello", "word"}
+			st.strTest = str
+			fmt.Println(str)
+			fmt.Println(st)
 	*/
 	//map test
 	/*	m := make(map[string]interface{})

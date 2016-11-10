@@ -7,8 +7,16 @@ import (
 	"net"
 )
 
+var (
+	TCP_DATA_FLAG chan int //It will recieved a int sum once TCPServer get data
+)
+
+func init() {
+	TCP_DATA_FLAG = make(chan int)
+}
+
 //Router
-type MUX map[string]func([]string, *TCPServer)
+type MUX map[string]func(Data, *TCPServer)
 
 type TCPServer struct {
 	conn net.Conn
@@ -17,11 +25,11 @@ type TCPServer struct {
 
 func NewTCPServer() (server TCPServer) {
 	server = TCPServer{}
-	server.Mux = make(map[string]func([]string, *TCPServer))
+	server.Mux = make(map[string]func(Data, *TCPServer))
 	return server
 }
 
-func (server *TCPServer) MuxRegister(cmd string, handleFunc func([]string, *TCPServer)) {
+func (server *TCPServer) MuxRegister(cmd string, handleFunc func(Data, *TCPServer)) {
 	server.Mux[cmd] = handleFunc
 }
 
@@ -33,14 +41,15 @@ func (server *TCPServer) ListenAndServer(tcpaddr string, handleFunc func(*TCPSer
 	checkError(err)
 	server.conn, _ = listener.Accept()
 	for {
-
 		go handleFunc(server)
+		<-TCP_DATA_FLAG
 	}
 }
 
 func (server TCPServer) GetData() Data {
 	buf := make([]byte, 512)
 	n, err := server.conn.Read(buf)
+	TCP_DATA_FLAG <- 1
 	checkError(err)
 	var o interface{}
 	json.Unmarshal(buf[:n], &o)

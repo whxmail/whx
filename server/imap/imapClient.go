@@ -11,13 +11,16 @@ import (
 	//	"github.com/emersion/go-imap/client"
 )
 
+func init() {
+
+}
+
 func main() {
 	log.Println("Connecting to server...")
 	server := types.NewTCPServer()
 
 	//Register router
 	server.MuxRegister("LOGIN", login)
-	test(server.Mux)
 	server.ListenAndServer("127.0.1.1:9999", myHandleFunc)
 
 	//	cmd := data.GetCMD()

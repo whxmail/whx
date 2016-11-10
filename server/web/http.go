@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	//"html/template"
 	"log"
 	"net/http"
 	"strings"
@@ -18,7 +17,7 @@ var (
 
 func init() {
 	client = types.TCPClient{}
-	client.StartClient("127.0.0.2:9999", "127.0.1.1:9999")
+	client.StartClient("127.0.0.9:9999", "127.0.1.1:9999")
 }
 
 func main() {

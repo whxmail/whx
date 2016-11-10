@@ -33,10 +33,11 @@ func (ic *IPClient) StartClient() {
 
 //login
 func (ic IPClient) Login(usr User) {
-	usr.CMD = []string{"LOGIN", usr.Mail.String(), usr.Password}
-	u, err := json.Marshal(usr)
-	checkError(err)
-	ic.conn.Write(u)
+	data := Data{
+		"REQ":      "LOGIN",
+		"Username": usr.Username,
+		"Password": usr.Password}
+	ic.SendData(data)
 }
 
 func (ic IPClient) GetData() Data {
